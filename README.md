@@ -1,4 +1,4 @@
-# Two-Factor Authentication for smart Contracts on Matic Network
+# Two-Factor Authentication for smart Contracts, using Chainlink oracle on Matic Network
 
 We are Digital Bridge https://twitter.com/DigitalBridgeIO
 Our main goal is building trust digital bridges for business.
