@@ -3,7 +3,7 @@
 We are Digital Bridge https://twitter.com/DigitalBridgeIO
 Our main goal is building trust digital bridges for business.
 
-This project consists of implementing the "two-factor authenticator" (Google Authenticator) for smart contracts with a Chainlink oracle on Matic Network.  There are also others features that improves the previous project that used Ethereum network.
+This project consists of implementing the two-factor google authenticator for smart contracts with a Chainlink oracle on Matic Network. There are also others features that improves the previous project that used Ethereum network.
 
 **This enhancement will increase applicable use cases, due to the benefits of this Layer 2 sidechain scaling solution (key features: scalability, high performance, security)**
 
