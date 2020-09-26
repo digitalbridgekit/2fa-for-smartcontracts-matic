@@ -9,9 +9,9 @@ This project consists of implementing the two-factor google authenticator for sm
 We are building trust digital bridges for business.
 
 About Digital Bridge
-Twitter: https://twitter.com/DigitalBridgeIO
-Web: http://digitalbridge.link
-Mail: dev@digitalbridge.link
+- Twitter: https://twitter.com/DigitalBridgeIO
+- Web: http://digitalbridge.link
+- Mail: dev@digitalbridge.link
 
 ## How to test this demo online
  1. Install metamask https://docs.chain.link/docs/install-metamask#install--configure
