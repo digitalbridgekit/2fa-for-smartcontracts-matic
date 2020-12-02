@@ -97,7 +97,7 @@ class App extends React.Component {
             pinOk: false,
           });
           
-          this.clientContract.methods.requestGAPINCheck('alice',this.state.value).send({ from: this.state.sourceAddress })
+          this.clientContract.methods.requestGAPINCheck('alice',parseInt(window.web3.utils.sha3(this.state.value).slice(2,14),16)).send({ from: this.state.sourceAddress })
                .on('receipt', ({ transactionHash }) => this.setState({ transactionHash })).catch(error => this.setState({ error: error.message }))
                .finally(() => {console.log('1 of 2 stages finished ok!') });
       
