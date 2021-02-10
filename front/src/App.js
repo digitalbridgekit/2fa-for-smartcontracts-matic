@@ -36,7 +36,8 @@ class App extends React.Component {
     this.free_state = "FREE";
     this.work_state = "BUSY";
     this.qr_page = "QR";
-    this.pin_page = "PIN"
+    this.pin_page = "PIN";
+    this.requestId = null;
     this.state = {
       sourceAddress: null,
       status: "FREE",
@@ -66,13 +67,12 @@ class App extends React.Component {
           //console.log(accountList);
           this.clientContract = new window.web3.eth.Contract(ABI, CONTRACT_ADDRESS);
           this.clientContract.events.RequestGAPINCheckFulfilled({} , (error, event) => 
-                {
-                  console.log(event.returnValues.requestId);
-                  console.log(event.returnValues.allowed);
-                  this.responsePINCheck(event.returnValues.allowed);
-                  this.setState({ transactionHash: null });
-                  //this.setState({message: event.returnValues._message});
-                });
+                 {
+                   console.log(event.returnValues.requestId);
+                   if (event.returnValues.requestId === this.requestId) {
+                     this.responsePINCheck(event.returnValues.allowed);
+                   }
+                 });
         });  
           
         return true;
@@ -97,23 +97,30 @@ class App extends React.Component {
             pinOk: false,
           });
           
-          this.clientContract.methods.requestGAPINCheck('alice',this.state.value).send({ from: this.state.sourceAddress })
-               .on('receipt', ({ transactionHash }) => this.setState({ transactionHash })).catch(error => this.setState({ error: error.message }))
-               .finally(() => {console.log('1 of 2 stages finished ok!') });
-      
+          this.clientContract.methods.requestGAPINCheck('alice',parseInt(window.web3.utils.sha3(this.state.value).slice(2,14),16)).send({ from: this.state.sourceAddress })
+               .on('receipt', ( receipt ) => {
+                 this.setState({ transactionHash: receipt.transactionHash });
+                 console.log("receipt.events.ChainlinkRequested.returnValues.id");
+                 console.log(receipt.events.ChainlinkRequested.returnValues.id);
+                 this.requestId = receipt.events.ChainlinkRequested.returnValues.id;
+               }).catch(error => this.setState({ error: error.message }))
+               .finally(() => 
+               {
+                 console.log('1 of 2 stages finished ok!');
+                                 
+               });
         }
       });
  
   }
 
   responsePINCheck(_pinOk) {
-    if (!_pinOk) this.setState({error: "Wrong PIN"});
+    if (!_pinOk) this.setState({error: " Wrong PIN"});
 
     this.setState({
-      status: "FREE",
-      pinOk: _pinOk,
-    });
-   
+        status: "FREE",
+        pinOk: _pinOk,
+    })
   }
 
   handleChange(event) {
@@ -135,6 +142,7 @@ class App extends React.Component {
           this.setState({pinOk: null});
           this.setState({value: ''});
           this.setState({error: null});
+          this.requestId = null;
         } else {
           if (_action === "NEXT") {
             this.setState({ status:  "FREE"});
